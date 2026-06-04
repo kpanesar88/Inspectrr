@@ -2,7 +2,6 @@ import cpuinfo
 import psutil
 import time
 
-from datetime import datetime
 from dataclasses import dataclass
 from typing import Optional, Any
 
@@ -20,7 +19,7 @@ class CpuInfo:
     advertised_hz: Optional[str]
     per_core: list[float]
     top_processes: list[dict[str, Any]]
-    datetime: str
+    cpu_state: str
 
 
 def getCpuInfo() -> CpuInfo:
@@ -43,9 +42,26 @@ def getCpuInfo() -> CpuInfo:
         advertised_hz=cpu_details.get("hz_advertised_friendly"),
         per_core=psutil.cpu_percent(interval=0.1, percpu=True),
         top_processes=getTopProcesses(),
-        datetime=str(datetime.now())
     )
 
+# COME BACK HERRRRREEEE
+
+def getCpuState(usage_percentage, per_core):
+    if usage_percentage is None or not per_core:
+        return "Unavailable"
+    
+    max_core_usage = max(per_core)
+    
+    if usage_percentage < 10:
+        return "Idle"
+    elif max_core_usage > 90 and usage_percentage < 50:
+        return "Single Core Bottleneck"
+    elif usage_percentage >= 85:
+        return "High Load"
+    elif usage_percentage >= 60:
+        return "Moderate Load"
+    else:
+        return "Normal"
 
 def getTopProcesses(limit=5):
     for proc in psutil.process_iter():
