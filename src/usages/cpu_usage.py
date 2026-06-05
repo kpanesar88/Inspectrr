@@ -42,9 +42,8 @@ def getCpuInfo() -> CpuInfo:
         advertised_hz=cpu_details.get("hz_advertised_friendly"),
         per_core=psutil.cpu_percent(interval=0.1, percpu=True),
         top_processes=getTopProcesses(),
+        cpu_state = getCpuState(usage_percentage= psutil.cpu_percent(interval=1), per_core=psutil.cpu_percent(interval=0.1, percpu=True),)
     )
-
-# COME BACK HERRRRREEEE
 
 def getCpuState(usage_percentage, per_core):
     if usage_percentage is None or not per_core:
