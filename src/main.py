@@ -1,4 +1,7 @@
 from usages.cpu_usage import getCpuInfo
+from usages.ram_usage import getRamInfo
 
 cpu = getCpuInfo()
-print(cpu)
+ram = getRamInfo()
+# print(cpu)
+print(ram)
